@@ -178,9 +178,15 @@ hr { border-color:#e4dfd8 !important; }
 
 
 # ── LOAD MODELS ────────────────────────────────────────────────────────────────
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODELS_DIR = os.path.join(BASE_DIR, 'models')
+
 @st.cache_resource
 def load():
-    def _p(f): return pickle.load(open(f'models/{f}','rb'))
+    def _p(f): 
+        path = os.path.join(MODELS_DIR, f)
+        return pickle.load(open(path, 'rb'))
+    
     return {
         'gnb':           _p('gnb.pkl'),
         'scaler_cls':    _p('scaler_cls.pkl'),
@@ -196,7 +202,7 @@ def load():
         'y_test':        _p('y_test.pkl'),
         'y_pred':        _p('y_pred.pkl'),
         'y_proba':       _p('y_proba.pkl'),
-        'df':            pd.read_csv('models/df_processed.csv', parse_dates=['time']),
+        'df':            pd.read_csv(os.path.join(MODELS_DIR, 'df_processed.csv'), parse_dates=['time']),
     }
 
 try:

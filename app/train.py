@@ -8,15 +8,15 @@ import numpy as np
 import pandas as pd
 warnings.filterwarnings('ignore')
 
-os.makedirs('models', exist_ok=True)
-
-print("="*55)
-print("  Sri Lanka Climate Model — Training Pipeline")
-print("="*55)
-
 # ── 1. LOAD ───────────────────────────────────────────────────────
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, 'data')
+MODELS_DIR = os.path.join(BASE_DIR, 'models')
+
+os.makedirs(MODELS_DIR, exist_ok=True)
+
 print("\n[1/7] Loading dataset...")
-df = pd.read_csv('data/SriLanka_Weather_Dataset.csv', parse_dates=['time'])
+df = pd.read_csv(os.path.join(DATA_DIR, 'SriLanka_Weather_Dataset.csv'), parse_dates=['time'])
 print(f"      {df.shape[0]:,} rows · {df['city'].nunique()} cities · {df['time'].min().date()} → {df['time'].max().date()}")
 
 # ── 2. PREPROCESS (exact notebook steps) ──────────────────────────
@@ -144,9 +144,11 @@ to_save = {
                           'sil_score':sil,'db_score':db,'kmeans_sil':km_sil},
 }
 for fname, obj in to_save.items():
-    with open(f'models/{fname}','wb') as f: pickle.dump(obj,f)
+    path = os.path.join(MODELS_DIR, fname)
+    with open(path, 'wb') as f: 
+        pickle.dump(obj, f)
 
-df_cls.to_csv('models/df_processed.csv', index=False)
+df_cls.to_csv(os.path.join(MODELS_DIR, 'df_processed.csv'), index=False)
 
 print("\n✅  All models saved to /models/")
 print(f"   Accuracy: {acc:.4f} | F1: {f1:.4f} | AUC: {auc:.4f}")
