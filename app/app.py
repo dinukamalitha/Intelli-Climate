@@ -1,6 +1,6 @@
 import streamlit as st
 from styles import apply_custom_css
-from data_loader import load_models_and_data, get_helper_variables
+from data_loader import load_models_and_data, get_helper_variables, get_models_mtime
 from ui_components import render_sidebar, render_header, render_climate_zones, render_predictor, render_explorer
 
 # ── PAGE CONFIG ────────────────────────────────────────────────────────────────
@@ -15,7 +15,8 @@ st.set_page_config(
 apply_custom_css()
 
 # ── LOAD DATA ──────────────────────────────────────────────────────────────────
-M = load_models_and_data()
+mtime = get_models_mtime()
+M = load_models_and_data(mtime)
 helpers = get_helper_variables(M)
 
 # ── SIDEBAR ────────────────────────────────────────────────────────────────────
