@@ -197,8 +197,7 @@ def render_predictor(M, helpers):
 
     with right:
         if predict:
-            feats = np.array([[temp_mean, temp_max, temp_min,
-                                wind, radiation, et0, temp_range, month, zone]])
+            feats = np.array([[temp_mean, temp_range, wind, radiation, et0, month, zone]])
             feats_sc = M['scaler_cls'].transform(feats)
             pred  = M['gnb'].predict(feats_sc)[0]
             proba = M['gnb'].predict_proba(feats_sc)[0]
