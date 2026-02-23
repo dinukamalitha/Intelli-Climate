@@ -1,0 +1,14 @@
+.git
+.streamlit
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.db
+.ipynb_checkpoints
+SriLanka_Weather_Dataset.csv
+tests/
+venv/
+.env
+# Keep models but ignore any backup versions
+models_bak/
