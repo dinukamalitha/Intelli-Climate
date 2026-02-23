@@ -6,9 +6,9 @@ __pycache__
 *.pyd
 .db
 .ipynb_checkpoints
-SriLanka_Weather_Dataset.csv
-tests/
-venv/
-.env
-# Keep models but ignore any backup versions
+# Exclude local models to ensure container trains fresh
+models/
 models_bak/
+
+# Include dataset for container-side training
+!SriLanka_Weather_Dataset.csv
