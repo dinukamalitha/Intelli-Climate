@@ -6,8 +6,15 @@ import streamlit as st
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODELS_DIR = os.path.join(BASE_DIR, 'models')
 
+def get_models_mtime():
+    """Returns the latest modification time of the models directory."""
+    if not os.path.exists(MODELS_DIR): return 0
+    files = [os.path.join(MODELS_DIR, f) for f in os.listdir(MODELS_DIR)]
+    if not files: return 0
+    return max(os.path.getmtime(f) for f in files)
+
 @st.cache_resource
-def load_models_and_data():
+def load_models_and_data(mtime):
     def _p(f): 
         path = os.path.join(MODELS_DIR, f)
         return pickle.load(open(path, 'rb'))
