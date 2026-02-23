@@ -104,15 +104,20 @@ else:
 # ── 5. CLASSIFICATION DATA ────────────────────────────────────────
 print("\n[5/7] Naive Bayes classification setup...")
 zone_map = station_profile.set_index('city')['climate_zone'].to_dict()
-df['climate_zone'] = df['city'].map(zone_map)
-df_cls = df[df['climate_zone'] != -1].copy()
+df['climate_zone'] = df['city'].map(zone_map).fillna(-1).astype(int)
 
 CLS_FEATS = [
-    'temperature_2m_mean', 'temperature_2m_max', 'temperature_2m_min',
-    'windspeed_10m_max', 'shortwave_radiation_sum', 'et0_fao_evapotranspiration',
-    'temp_range', 'month', 'climate_zone'
+     'temperature_2m_mean',
+    'temp_range',
+    'windspeed_10m_max',
+    'shortwave_radiation_sum',
+    'et0_fao_evapotranspiration',
+    'month',
+    'climate_zone'
 ]
-X = df_cls[CLS_FEATS]; y = df_cls['is_rainy']
+X = df[CLS_FEATS]
+y = df['is_rainy']
+groups = df['city']
 
 X_tv, X_test, y_tv, y_test = train_test_split(X, y, test_size=0.20, random_state=42, stratify=y)
 X_train, X_val, y_train, y_val = train_test_split(X_tv, y_tv, test_size=0.25, random_state=42, stratify=y_tv)
